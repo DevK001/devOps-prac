@@ -19,7 +19,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'master', credentialsId: 'git-credentials', url: 'https://github.com/learnwithparth/springboot-jenkins.git'
+                git branch: 'main', credentialsId: 'git-credentials', url: 'https://github.com/DevK001/devOps-prac.git'
             }
         }
         stage('init'){
@@ -47,7 +47,7 @@ pipeline {
                     sh 'mvn clean package'
                     def version = (readFile('pom.xml') =~ '<version>(.+)</version>')[0][1]
                     env.IMAGE_NAME = "$version-Build-$BUILD_NUMBER"
-                    sh "docker build -t learnwithparth/spring-boot:${IMAGE_NAME} ."    
+                    sh "docker build -t dev0050/exam0050:${IMAGE_NAME} ."
                     }
             }
         }
@@ -75,7 +75,7 @@ pipeline {
                 script{echo 'deploying the application'
                 withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                    sh "docker push learnwithparth/spring-boot:${IMAGE_NAME}"
+                    sh "docker push dev0050/exam0050:${IMAGE_NAME}"
                 }}
                 
              }
